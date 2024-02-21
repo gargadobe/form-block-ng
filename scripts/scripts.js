@@ -117,6 +117,15 @@ async function loadLazy(doc) {
 }
 
 /**
+ * Returns the true origin of the current page in the browser.
+ * If the page is running in a iframe with srcdoc, the ancestor origin is returned.
+ * @returns {String} The true origin
+ */
+export function getOrigin() {
+  return window.location.href === 'about:srcdoc' ? window.parent.location.origin : window.location.origin;
+}
+
+/**
  * Loads everything that happens a lot later,
  * without impacting the user experience.
  */

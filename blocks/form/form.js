@@ -10,7 +10,6 @@ import GoogleReCaptcha from './integrations/recaptcha.js';
 import fileDecorate from './file.js';
 import DocBaseFormToAF from './transform.js';
 import handleSubmit from './submit.js';
-import { getOrigin, rewriteLinkUrl } from '../../scripts/scripts.js';
 
 export const DELAY_MS = 0;
 let captchaField;
@@ -50,22 +49,6 @@ function setConstraints(element, fd) {
   }
 }
 
-function createFragment(fd) {
-  const wrapper = createFieldWrapper(fd);
-  wrapper.id = fd.id;
-  if (fd.value) {
-    const fragmentUrl = new URL(fd.value, getOrigin());
-    const fragmentPath = fragmentUrl.pathname;
-    const url = fragmentPath.endsWith('.html') ? fragmentPath.replace('.html', '.plain.html') : `${fragmentPath}.plain.html`;
-    fetch(url).then(async (resp) => {
-      if (resp.ok) {
-        wrapper.innerHTML = await resp.text();
-        wrapper.querySelectorAll('a[href]').forEach((link) => rewriteLinkUrl(link));
-      }
-    });
-  }
-  return wrapper;
-}
 
 function createInput(fd) {
   const input = document.createElement('input');
@@ -212,7 +195,6 @@ const fieldRenderers = {
   'radio-group': createRadioOrCheckboxGroup,
   'checkbox-group': createRadioOrCheckboxGroup,
   file: createFileField,
-  fragment: createFragment,
 };
 
 async function fetchForm(pathname) {
