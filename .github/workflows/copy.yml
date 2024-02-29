@@ -22,8 +22,8 @@ jobs:
       - name: Copy specified files
         run: |
           mkdir -p ./blocks/cards
-          cp temp_repo/blocks/cards/card.js ./blocks/cards/card.js
-          cp temp_repo/blocks/cards/card.css ./blocks/cards/card.css
+          cp temp_repo/blocks/cards/cards.js ./blocks/cards/cards.js
+          cp temp_repo/blocks/cards/cards.css ./blocks/cards/cards.css
 
       - name: Commit and push the copied files
         run: |
