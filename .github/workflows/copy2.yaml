@@ -37,6 +37,7 @@ jobs:
 
       - name: Copy Specified Files/Folders
         run: |
+          mkdir -p blocks/accordion
           cp -r source_repo/${{ github.event.inputs.source_path }} ./${{ github.event.inputs.source_path }}
           ls -l
 
