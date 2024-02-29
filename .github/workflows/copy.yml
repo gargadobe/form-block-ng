@@ -6,7 +6,7 @@ on:
       repo_url:
         description: 'Public GitHub Repo URL (default is set to Adobe AEM Boilerplate)'
         required: false
-        default: 'https://github.com/adobe/aem-boilerplate.git'
+        default: 'https://github.com/adobe/aem-block-collection.git'
         type: string
 
 jobs:
@@ -21,9 +21,9 @@ jobs:
 
       - name: Copy specified files
         run: |
-          mkdir -p ./blocks/cards
-          cp temp_repo/blocks/cards/cards.js ./blocks/cards/cards.js
-          cp temp_repo/blocks/cards/cards.css ./blocks/cards/cards.css
+          mkdir -p ./blocks/modal
+          cp temp_repo/blocks/modal/modal.js ./blocks/modal/modal.js
+          cp temp_repo/blocks/modal/modal.css ./blocks/modal/modal.css
           ls -l .
           pwd
 
