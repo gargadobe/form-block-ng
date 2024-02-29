@@ -29,6 +29,6 @@ jobs:
         run: |
           git config --global user.name 'GitHub Action'
           git config --global user.email 'action@github.com'
-          git add blocks/cards/card.js blocks/cards/card.css
+          git add blocks/cards/cards.js blocks/cards/cards.css
           git commit -m "Copy specified files from Adobe AEM Boilerplate"
           git push
