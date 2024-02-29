@@ -37,13 +37,16 @@ jobs:
 
       - name: Copy Specified Files/Folders
         run: |
-          cp -r source_repo/${{ github.event.inputs.source_path }} temp_copy
+          cp -r source_repo/${{ github.event.inputs.source_path }} ./${{ github.event.inputs.source_path }}
+          ls -l
 
       - name: Configure Git for Current Repository Operations
         env:
           PAT: ${{ github.event.inputs.pat }}
         run: |
           if [ -z "$PAT" ]; then
+            echo "here"
+            echo "https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"
             git remote set-url origin https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
           else
             git remote set-url origin https://${PAT}@github.com/${{ github.repository }}.git
