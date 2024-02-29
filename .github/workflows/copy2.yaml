@@ -42,10 +42,9 @@ jobs:
       - name: Configure Git for Current Repository Operations
         env:
           PAT: ${{ github.event.inputs.pat }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           if [ -z "$PAT" ]; then
-            git remote set-url origin https://github.com/${{ github.repository }}.git
+            git remote set-url origin https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
           else
             git remote set-url origin https://${PAT}@github.com/${{ github.repository }}.git
           fi
