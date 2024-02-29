@@ -1,13 +1,7 @@
-name: Copy Specified Files from Public Repo
+name: Copy Specified Files from Adobe AEM Block Collection
 
 on:
   workflow_dispatch:
-    inputs:
-      repo_url:
-        description: 'Public GitHub Repo URL (default is set to Adobe AEM Boilerplate)'
-        required: false
-        default: 'https://github.com/adobe/aem-block-collection.git'
-        type: string
 
 jobs:
   copy-files:
@@ -15,25 +9,27 @@ jobs:
     steps:
       - name: Checkout current repo
         uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }} # Use GITHUB_TOKEN for authentication
 
       - name: Clone specified public repo
-        run: git clone ${{ github.event.inputs.repo_url }} temp_repo
+        run: git clone https://github.com/adobe/aem-block-collection.git temp_repo
 
       - name: Copy specified files
         run: |
           mkdir -p ./blocks/modal
           cp temp_repo/blocks/modal/modal.js ./blocks/modal/modal.js
           cp temp_repo/blocks/modal/modal.css ./blocks/modal/modal.css
-          ls -l .
-          pwd
+
+      - name: Configure Git
+        run: |
+          git config user.name 'GitHub Action'
+          git config user.email 'action@github.com'
+          git remote set-url origin https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
 
       - name: Commit and push the copied files
         run: |
+          git add blocks/modal/modal.js blocks/modal/modal.css
           git status
-          git config --global user.name 'GitHub Action'
-          git config --global user.email 'action@github.com'
-          git add blocks
-          git status
-          git commit -m "Copy specified files from Adobe AEM Boilerplate"
+          git commit -m "Copy specified files from Adobe AEM Block Collection" || echo "No changes to commit"
           git push
-
