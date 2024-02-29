@@ -1,0 +1,34 @@
+name: Copy Specified Files from Public Repo
+
+on:
+  workflow_dispatch:
+    inputs:
+      repo_url:
+        description: 'Public GitHub Repo URL (default is set to Adobe AEM Boilerplate)'
+        required: false
+        default: 'https://github.com/adobe/aem-boilerplate.git'
+        type: string
+
+jobs:
+  copy-files:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout current repo
+        uses: actions/checkout@v2
+
+      - name: Clone specified public repo
+        run: git clone ${{ github.event.inputs.repo_url }} temp_repo
+
+      - name: Copy specified files
+        run: |
+          mkdir -p ./blocks/cards
+          cp temp_repo/blocks/cards/card.js ./blocks/cards/card.js
+          cp temp_repo/blocks/cards/card.css ./blocks/cards/card.css
+
+      - name: Commit and push the copied files
+        run: |
+          git config --global user.name 'GitHub Action'
+          git config --global user.email 'action@github.com'
+          git add blocks/cards/card.js blocks/cards/card.css
+          git commit -m "Copy specified files from Adobe AEM Boilerplate"
+          git push
