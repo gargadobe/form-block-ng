@@ -21,14 +21,17 @@ jobs:
 
       - name: Copy specified files
         run: |
-          mkdir -p ./blocks/cards
-          cp temp_repo/blocks/cards/cards.js ./blocks/cards/cards.js
-          cp temp_repo/blocks/cards/cards.css ./blocks/cards/cards.css
-
+          mkdir -p ${{ github.workspace }}/blocks/cards
+          cp ${{ github.workspace }}/temp_repo/blocks/cards/cards.js ${{ github.workspace }}/blocks/cards/cards.js
+          cp ${{ github.workspace }}/temp_repo/blocks/cards/cards.css ${{ github.workspace }}/blocks/cards/cards.css
+          ls -l ${{ github.workspace }}/blocks/cards
+      
       - name: Commit and push the copied files
         run: |
           git config --global user.name 'GitHub Action'
           git config --global user.email 'action@github.com'
           git add blocks/cards/cards.js blocks/cards/cards.css
-          git commit -m "Copy specified files from Adobe AEM Boilerplate"
+          git status
+          git commit -m "Copy specified files from Adobe AEM Boilerplate" || echo "No changes to commit"
           git push
+
