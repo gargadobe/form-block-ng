@@ -73,6 +73,7 @@ jobs:
 
       - name: Commit and Push Changes to Current Repository
         run: |
-          git add .
+          TARGET_PATH="${{ github.event.inputs.source_path }}"
+          git add "$TARGET_PATH"
           git commit -m "Copy files/folders from ${{ github.event.inputs.source_repo }}"
           git push
