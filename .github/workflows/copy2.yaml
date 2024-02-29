@@ -40,11 +40,24 @@ jobs:
             git clone https://${SOURCE_PAT}@github.com/${{ github.event.inputs.source_repo }}.git source_repo
           fi
 
-      - name: Copy Specified Files/Folders
+      - name: Copy File/Directory with Intermediary Directories
         run: |
-          mkdir -p blocks/accordion
-          cp -r source_repo/${{ github.event.inputs.source_path }} ./${{ github.event.inputs.source_path }}
-          ls -l
+          SOURCE_PATH="source_repo/${{ github.event.inputs.source_path }}"
+          TARGET_PATH="${{ github.event.inputs.source_path }}"
+          # Determine if source is a file or directory, then copy accordingly
+          if [ -d "$SOURCE_PATH" ]; then
+            # It's a directory, ensure target directory exists and copy contents
+            mkdir -p "$TARGET_PATH"
+            cp -r "$SOURCE_PATH/"* "$TARGET_PATH/"
+          elif [ -f "$SOURCE_PATH" ]; then
+            # It's a file, ensure target directory exists and copy the file
+            mkdir -p "$(dirname "$TARGET_PATH")"
+            cp "$SOURCE_PATH" "$TARGET_PATH"
+          else
+            echo "Source path does not exist or is not a valid file/directory."
+            exit 1
+          fi
+
 
       - name: Configure Git for Current Repository Operations
         env:
